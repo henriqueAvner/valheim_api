@@ -1,6 +1,8 @@
 using api_valheim.Repository;
 using api_valheim.models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace api_valheim.controllers;
 
@@ -17,6 +19,8 @@ public class PlayerController : Controller
 
 
     [HttpPost]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    [Authorize(policy: "levelB")]
     public IActionResult AddPlayer([FromBody] Player player)
     {
         return Created("", _repository.AddPlayer(player));

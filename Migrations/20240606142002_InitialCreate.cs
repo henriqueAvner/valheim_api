@@ -28,10 +28,27 @@ namespace api_valheim.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Users",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Password = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Access = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Users", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Characters",
                 columns: table => new
                 {
-                    CharacterId = table.Column<int>(type: "int", nullable: false),
+                    CharacterId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Level = table.Column<int>(type: "int", nullable: false),
                     PlayerId = table.Column<int>(type: "int", nullable: false)
@@ -40,8 +57,8 @@ namespace api_valheim.Migrations
                 {
                     table.PrimaryKey("PK_Characters", x => x.CharacterId);
                     table.ForeignKey(
-                        name: "FK_Characters_Players_CharacterId",
-                        column: x => x.CharacterId,
+                        name: "FK_Characters_Players_PlayerId",
+                        column: x => x.PlayerId,
                         principalTable: "Players",
                         principalColumn: "PlayerId",
                         onDelete: ReferentialAction.Cascade);
@@ -70,6 +87,11 @@ namespace api_valheim.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_Characters_PlayerId",
+                table: "Characters",
+                column: "PlayerId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Items_CharacterId",
                 table: "Items",
                 column: "CharacterId");
@@ -80,6 +102,9 @@ namespace api_valheim.Migrations
         {
             migrationBuilder.DropTable(
                 name: "Items");
+
+            migrationBuilder.DropTable(
+                name: "Users");
 
             migrationBuilder.DropTable(
                 name: "Characters");

@@ -9,5 +9,7 @@ public interface IValheimContext
     public DbSet<Character> Characters { get; set; }
     public DbSet<Item> Items { get; set; }
 
+    public DbSet<User> Users { get; set; }
+
     public int SaveChanges();
 }

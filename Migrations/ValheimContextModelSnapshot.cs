@@ -25,7 +25,10 @@ namespace api_valheim.Migrations
             modelBuilder.Entity("api_valheim.models.Character", b =>
                 {
                     b.Property<int>("CharacterId")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CharacterId"));
 
                     b.Property<int>("Level")
                         .HasColumnType("int");
@@ -37,6 +40,8 @@ namespace api_valheim.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("CharacterId");
+
+                    b.HasIndex("PlayerId");
 
                     b.ToTable("Characters");
                 });
@@ -93,11 +98,36 @@ namespace api_valheim.Migrations
                     b.ToTable("Players");
                 });
 
+            modelBuilder.Entity("api_valheim.models.User", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Access")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Email")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Password")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Users");
+                });
+
             modelBuilder.Entity("api_valheim.models.Character", b =>
                 {
                     b.HasOne("api_valheim.models.Player", "Player")
                         .WithMany("Characters")
-                        .HasForeignKey("CharacterId")
+                        .HasForeignKey("PlayerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

@@ -1,6 +1,8 @@
 using api_valheim.Repository;
 using api_valheim.models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace api_valheim.controllers;
 
@@ -17,13 +19,17 @@ public class ItemController : Controller
 
 
     [HttpPost]
-    public IActionResult AddCharacter([FromBody] Item item)
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    [Authorize(policy: "levelA")]
+    public IActionResult AddItem([FromBody] Item item)
     {
         return Created("", _repository.AddItem(item));
     }
 
     [HttpGet]
-    public IActionResult GetCharacters()
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    [Authorize(policy: "levelB")]
+    public IActionResult GetItems()
     {
         return Ok(_repository.GetItems());
     }
