@@ -11,6 +11,7 @@ public class ValheimContext : DbContext, IValheimContext
     public DbSet<Player> Players { get; set; } = null!;
     public DbSet<Character> Characters { get; set; } = null!;
     public DbSet<Item> Items { get; set; } = null!;
+    public DbSet<User> Users { get; set; } = null!;
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
