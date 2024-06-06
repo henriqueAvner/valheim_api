@@ -3,6 +3,7 @@ using api_valheim.models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using System.Security.Claims;
 
 namespace api_valheim.controllers;
 
@@ -23,7 +24,13 @@ public class ItemController : Controller
     [Authorize(policy: "levelA")]
     public IActionResult AddItem([FromBody] Item item)
     {
-        return Created("", _repository.AddItem(item));
+        var tokenClaims = HttpContext.User.Identity as ClaimsIdentity;
+
+        var name = tokenClaims!.Claims.FirstOrDefault(claim => claim.Type == ClaimTypes.Name)?.Value;
+        var email = tokenClaims!.Claims.FirstOrDefault(claim => claim.Type == ClaimTypes.Email)?.Value;
+        _repository.AddItem(item);
+
+        return Created("", new { item, name, email });
     }
 
     [HttpGet]
