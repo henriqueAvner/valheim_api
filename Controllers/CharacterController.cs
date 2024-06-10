@@ -19,16 +19,12 @@ public class CharacterController : Controller
 
 
     [HttpPost]
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-    [Authorize(policy: "levelB")]
     public IActionResult AddCharacter([FromBody] Character character)
     {
         return Created("", _repository.AddCharacter(character));
     }
 
     [HttpGet]
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-    [Authorize(policy: "levelB")]
     public IActionResult GetCharacters()
     {
         return Ok(_repository.GetCharacters());

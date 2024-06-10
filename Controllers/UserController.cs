@@ -3,6 +3,7 @@ using api_valheim.models;
 using api_valheim.Repository;
 using api_valheim.DTO;
 using api_valheim.services;
+using System.Security.Claims;
 
 namespace Auth.Controllers;
 
@@ -37,7 +38,14 @@ public class UserController : ControllerBase
         if (existingUser.Password != loginDTO.Password) return Unauthorized(new { message = "Incorrect e-mail or password" });
 
         var token = _tokenGenerator.Generate(existingUser);
-        return Ok(new { token });
+
+        var claimToken = HttpContext.User.Identity as ClaimsIdentity;
+
+        var email = claimToken?.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
+
+
+
+        return Ok(new { token, email });
     }
 
 }

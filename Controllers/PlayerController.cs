@@ -19,8 +19,6 @@ public class PlayerController : Controller
 
 
     [HttpPost]
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-    [Authorize(policy: "levelB")]
     public IActionResult AddPlayer([FromBody] Player player)
     {
         return Created("", _repository.AddPlayer(player));

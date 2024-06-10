@@ -20,8 +20,6 @@ public class ItemController : Controller
 
 
     [HttpPost]
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-    [Authorize(policy: "levelA")]
     public IActionResult AddItem([FromBody] Item item)
     {
         var tokenClaims = HttpContext.User.Identity as ClaimsIdentity;
@@ -34,8 +32,6 @@ public class ItemController : Controller
     }
 
     [HttpGet]
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-    [Authorize(policy: "levelB")]
     public IActionResult GetItems()
     {
         return Ok(_repository.GetItems());
