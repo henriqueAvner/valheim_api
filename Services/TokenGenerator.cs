@@ -7,12 +7,14 @@ using Microsoft.IdentityModel.Tokens;
 namespace api_valheim.services;
 
 public class TokenGenerator
+
 {
+    private string Secret = "4d82a63bbdc67c1e4784edd6587f3730c";
+
+    private int ExpiresIn = 4;
+
     public string Generate(User user)
     {
-        var Secret = "4d82a63bbdc67c1e4784edd6587f3730c";
-
-        var ExpiresIn = 4;
 
         var tokenHandler = new JwtSecurityTokenHandler();
         var tokenDescriptor = new SecurityTokenDescriptor()
