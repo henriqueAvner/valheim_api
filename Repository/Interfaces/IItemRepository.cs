@@ -6,4 +6,6 @@ public interface IItemRepository
 {
     Item AddItem(Item item);
     IEnumerable<Item> GetItems();
+
+    void DeleteItem(int id);
 }

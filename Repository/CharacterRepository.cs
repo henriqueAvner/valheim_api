@@ -14,10 +14,24 @@ public class CharacterRepository : ICharacterRepository
 
     public Character AddCharacter(Character character)
     {
+        var characterExists = _valheim.Characters.Select(c => c.CharacterId == character.CharacterId);
+
+        if (characterExists != null)
+        {
+            throw new InvalidDataException("Character already exists.");
+        }
         _valheim.Characters.Add(character);
         _valheim.SaveChanges();
 
         return character;
+    }
+
+    public void DeleteCharacter(int CharacterId)
+    {
+        var findCharacter = _valheim.Characters.Find(CharacterId) ?? throw new KeyNotFoundException("Character not found");
+
+        _valheim.Characters.Remove(findCharacter);
+        _valheim.SaveChanges();
     }
 
     public IEnumerable<Character> GetCharacters()

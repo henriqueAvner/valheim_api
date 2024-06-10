@@ -8,4 +8,6 @@ public interface ICharacterRepository
     Character AddCharacter(Character character);
     IEnumerable<Character> GetCharacters();
 
+    void DeleteCharacter(int id);
+
 }
