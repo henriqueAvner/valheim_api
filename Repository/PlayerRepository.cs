@@ -14,12 +14,13 @@ public class PlayerRepository : IPlayerRepository
 
     public Player AddPlayer(Player player)
     {
-        var findPlayer = _valheim.Players.FirstOrDefault(p => p.PlayerId == player.PlayerId);
+        var findPlayer = _valheim.Players.FirstOrDefault(p => p.Email == player.Email);
 
-        if (findPlayer == null)
+        if (findPlayer != null)
         {
             throw new InvalidOperationException("This player already exist.");
         }
+        player.DateJoined = DateTime.Now;
         _valheim.Players.Add(player);
         _valheim.SaveChanges();
 
@@ -39,7 +40,7 @@ public class PlayerRepository : IPlayerRepository
         {
             throw new KeyNotFoundException("Player Not Found");
         }
-        _valheim.Remove(playerId);
+        _valheim.Players.Remove(findPlayerById);
         _valheim.SaveChanges();
     }
 

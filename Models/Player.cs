@@ -14,7 +14,7 @@ public class Player
 
     public string? Password { get; set; }
 
-    public DateTime DateJoined { get; set; }
+    public DateTime? DateJoined { get; set; }
 
     public ICollection<Character>? Characters { get; set; } = null;
 }
