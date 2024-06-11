@@ -23,7 +23,7 @@ public class TokenGenerator
 
             SigningCredentials = new SigningCredentials(
                 new SymmetricSecurityKey(Encoding.ASCII.GetBytes(Secret)), SecurityAlgorithms.HmacSha256),
-            Expires = DateTime.Now.AddHours(ExpiresIn)
+            Expires = DateTime.Now.AddDays(ExpiresIn)
         };
 
         var token = tokenHandler.CreateToken(tokenDescriptor);

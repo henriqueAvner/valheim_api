@@ -20,11 +20,14 @@ public class ItemController : Controller
 
 
     [HttpPost]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    [Authorize(Policy = "Admin")]
     public IActionResult AddItem([FromBody] Item item)
     {
         var tokenClaims = HttpContext.User.Identity as ClaimsIdentity;
 
         var name = tokenClaims!.Claims.FirstOrDefault(claim => claim.Type == ClaimTypes.Name)?.Value;
+
         var email = tokenClaims!.Claims.FirstOrDefault(claim => claim.Type == ClaimTypes.Email)?.Value;
         _repository.AddItem(item);
 
@@ -35,6 +38,20 @@ public class ItemController : Controller
     public IActionResult GetItems()
     {
         return Ok(_repository.GetItems());
+    }
+
+    [HttpDelete("{ItemId}")]
+    public IActionResult RemoveItem(int ItemId)
+    {
+        try
+        {
+            _repository.DeleteItem(ItemId);
+            return NoContent();
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(new { message = ex.Message });
+        }
     }
 
 }
