@@ -14,11 +14,11 @@ public class CharacterRepository : ICharacterRepository
 
     public Character AddCharacter(Character character)
     {
-        var characterExists = _valheim.Characters.Select(c => c.CharacterId == character.CharacterId);
+        var characterExists = _valheim.Characters.FirstOrDefault(c => c.CharacterId == character.CharacterId);
 
-        if (characterExists != null)
+        if (characterExists == null)
         {
-            throw new InvalidDataException("Character already exists.");
+            throw new InvalidOperationException("Character already exists.");
         }
         _valheim.Characters.Add(character);
         _valheim.SaveChanges();
@@ -36,6 +36,6 @@ public class CharacterRepository : ICharacterRepository
 
     public IEnumerable<Character> GetCharacters()
     {
-        return _valheim.Characters;
+        return _valheim.Characters.ToList();
     }
 }

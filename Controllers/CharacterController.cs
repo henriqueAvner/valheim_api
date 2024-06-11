@@ -3,6 +3,7 @@ using api_valheim.models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using System.Security.Claims;
 
 namespace api_valheim.controllers;
 
@@ -19,11 +20,18 @@ public class CharacterController : Controller
 
 
     [HttpPost]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    [Authorize(Policy = "User")]
     public IActionResult AddCharacter([FromBody] Character character)
     {
         try
         {
-            return Created("", _repository.AddCharacter(character));
+            var tokenClaims = HttpContext.User.Identity as ClaimsIdentity;
+
+            var name = tokenClaims?.Claims.FirstOrDefault(claim => claim.Type == ClaimTypes.Name)!.Value;
+            _repository.AddCharacter(character);
+
+            return Created("", new { name, character });
         }
         catch (Exception ex)
         {
