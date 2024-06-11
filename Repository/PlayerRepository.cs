@@ -14,6 +14,12 @@ public class PlayerRepository : IPlayerRepository
 
     public Player AddPlayer(Player player)
     {
+        var findPlayer = _valheim.Players.FirstOrDefault(p => p.PlayerId == player.PlayerId);
+
+        if (findPlayer == null)
+        {
+            throw new InvalidOperationException("This player already exist.");
+        }
         _valheim.Players.Add(player);
         _valheim.SaveChanges();
 
@@ -22,6 +28,19 @@ public class PlayerRepository : IPlayerRepository
 
     public IEnumerable<Player> GetPlayers()
     {
-        return _valheim.Players;
+        return _valheim.Players.ToList();
     }
+
+    public void DeletePlayer(int playerId)
+    {
+        var findPlayerById = _valheim.Players.Find(playerId);
+
+        if (findPlayerById == null)
+        {
+            throw new KeyNotFoundException("Player Not Found");
+        }
+        _valheim.Remove(playerId);
+        _valheim.SaveChanges();
+    }
+
 }

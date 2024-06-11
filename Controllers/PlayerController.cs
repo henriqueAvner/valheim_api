@@ -30,4 +30,20 @@ public class PlayerController : Controller
         return Ok(_repository.GetPlayers());
     }
 
+    [HttpDelete("{PlayerId}")]
+    public IActionResult DeletePlayer(int PlayerId)
+    {
+        try
+        {
+            _repository.DeletePlayer(PlayerId);
+            return NoContent();
+        }
+        catch (Exception ex)
+        {
+
+            return BadRequest(new { message = ex.Message });
+        }
+
+    }
+
 }
