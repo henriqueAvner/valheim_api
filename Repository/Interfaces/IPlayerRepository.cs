@@ -6,4 +6,6 @@ public interface IPlayerRepository
 {
     Player AddPlayer(Player player);
     IEnumerable<Player> GetPlayers();
+
+    void DeletePlayer(int PlayerId);
 }
