@@ -3,6 +3,7 @@ using api_valheim.models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using System.Security.Claims;
 
 namespace api_valheim.controllers;
 
@@ -19,9 +20,27 @@ public class PlayerController : Controller
 
 
     [HttpPost]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    [Authorize(Policy = "levelA")]
     public IActionResult AddPlayer([FromBody] Player player)
     {
-        return Created("", _repository.AddPlayer(player));
+        var tokenClaims = HttpContext.User.Identity as ClaimsIdentity;
+
+        var name = tokenClaims!.Claims.FirstOrDefault(claim => claim.Type == ClaimTypes.Name)?.Value;
+
+        var email = tokenClaims!.Claims.FirstOrDefault(claim => claim.Type == ClaimTypes.Email)?.Value;
+
+        try
+        {
+            var newPlayer = _repository.AddPlayer(player);
+            return Created("", new { name, email, newPlayer });
+        }
+        catch (Exception ex)
+        {
+
+            return BadRequest(new { message = ex.Message });
+        }
+
     }
 
     [HttpGet]

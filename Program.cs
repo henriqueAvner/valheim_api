@@ -44,12 +44,9 @@ builder.Services.AddAuthentication(options =>
 builder.Services.AddAuthorization(options =>
 {
     options.AddPolicy("levelA", policy => policy.RequireClaim(ClaimTypes.Email).RequireClaim(ClaimTypes.Role, "Admin"));
-});
-builder.Services.AddAuthorization(options =>
-{
+
     options.AddPolicy("levelB", policy => policy.RequireClaim(ClaimTypes.Email).RequireClaim(ClaimTypes.Role, "User"));
 });
-
 
 // SymmetricSecurityKey(Encoding.ASCII.GetBytes(Secret), SecurityAlgorithms.HmacSha256)
 var app = builder.Build();
