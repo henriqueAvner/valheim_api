@@ -140,9 +140,10 @@ api-valheim/
 
 ### Passos de Instalação
 
-1. **Clone ou abra o projeto**
+1. **Clone o repositório e navegue até a pasta do projeto**
    ```bash
-   cd c:\Users\avner\OneDrive\Área de Trabalho\api_valheim\valheim_api
+   git clone https://github.com/seu-usuario/api-valheim.git
+   cd api-valheim
    ```
 
 2. **Restaure as dependências**
